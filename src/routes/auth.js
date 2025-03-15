@@ -9,7 +9,7 @@ const { body, validationResult } = require('express-validator')
 
 
 router.get('/register', (req, res) => {
-    res.render('register', { title: "Fast correspondence | Signup", })
+    res.render('register', { title: "forStudy | Signup", })
 })
 
 router.post(
@@ -67,7 +67,7 @@ async (req, res) => {
 })
 
 router.get('/login', (req, res) => {
-    res.render('login')
+    res.render('login', { title: "forStudy | Signin" })
 })
 
 router.post(
@@ -124,7 +124,7 @@ router.get('/:userId/profile', checkLogin, async (req, res) => {
       user = checkuser ? checkuser.toJSON() : null
     }
 
-    return res.render('profile', { user })
+    return res.render('profile', { user, title: "forStudy | Profile" })
   } catch (error) {
     console.error("Erro ao acessar o perfil: ", error instanceof Error ? error.message : error)
   }

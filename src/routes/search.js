@@ -35,7 +35,7 @@ router.get('/:userId/:area', checkLogin, async (req, res) => {
             answer: hist.answer
         }))
 
-        res.render('search', { history: mappedHistory, title: "getcorrespondence | Search" })
+        res.render('search', { history: mappedHistory, title: "forStudy | Search" })
     } catch (error) {
         console.log("ERRO: " + error)
     }

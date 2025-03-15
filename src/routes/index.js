@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
         const areas = await BrainArea.findAll()
         const areasContent = areas.map(area => area.toJSON())
 
-        res.render('index', { user, currentYear, areas: areasContent });
+        res.render('index', { user, currentYear, areas: areasContent, title: "forStudy | Nordino Mavie Dev" });
     }
     catch (error) {
         console.log(error)

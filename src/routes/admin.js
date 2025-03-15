@@ -21,7 +21,7 @@ router.get('/dashboard', checkLogin, checkAdmin, async (req, res) => {
     let areasMapped = areas.map(area => area.toJSON())
     let subjectsMapped = subjects.map(subject => subject.toJSON())
 
-    res.render('dashboard', { areas: areasMapped, subjects: subjectsMapped, numberOfAreas, numberOfSubjects, numberOfSections })
+    res.render('dashboard', { areas: areasMapped, subjects: subjectsMapped, numberOfAreas, numberOfSubjects, numberOfSections, title: "forStudy | Dashboard" })
 })
 
 router.get('/newtopic', checkLogin, checkAdmin, (req, res) => {
