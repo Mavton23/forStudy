@@ -10,6 +10,9 @@ const sequelize = new Sequelize(
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         dialect: 'mysql',
+        dialectOptions: {
+          charset: 'utf8mb4'
+        },
         logging: false,
         define: {
             timestamps: false,
