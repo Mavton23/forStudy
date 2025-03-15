@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="/css/dashboard.css">
+
+<section class="dashboard">
+  <div class="container">
+    <div class="row">
+      <div class="section-title">
+        <h3>dashboard</h3>
+      </div>
+      <div class="dash-actions">
+        <div class="painel">
+          <div class="left">
+            <div class="container">
+              <div class="content">
+                <div class="actions">
+                  <div class="title">
+                    <h4>Actions</h4>
+                  </div>
+                  <a href="/admin/newtopic">Adicionar</a>
+                  <a href="/admin/deletetopic">Excluir</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="middle">
+            <div class="container">
+              <div class="content">
+                <div class="title">
+                  <h4>Overview</h4>
+                </div>
+                <div class="titles">
+                  <label for="title">Areas: </label>
+                  <select id="title" class="overview-item">
+                    {{#each areas}}
+                      <option>{{area}}</option>
+                    {{/each}}
+                  </select><br>
+                </div>
+                <div class="categories">
+                  <label for="category">Subjects: </label>
+                  <select id="category" class="overview-item">
+                    {{#each subjects}}
+                      <option>{{subject}}</option>
+                    {{/each}}
+                  </select><br>
+                </div>
+                <div class="statistics">
+                  <div class="statistics-number">
+                    <h6>Areas</h6><h6 class="slash">|</h6>
+                    <span>{{numberOfAreas}}</span>
+                  </div>
+
+                  <div class="statistics-number">
+                    <h6>Subjects</h6><h6 class="slash">|</h6>
+                    <span>{{numberOfSubjects}}</span>
+                  </div>
+                  
+                  <div class="statistics-number">
+                    <h6>Sections</h6><h6 class="slash">|</h6>
+                    <span>{{numberOfSections}}</span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right">
+            <div class="container">
+              <div class="content">
+                <div class="title">
+                  <h4>Links</h4>
+                </div>
+                <a href="/">Home</a>
+                <a href="/auth/signout">Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

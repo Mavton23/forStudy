@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="/css/form.css">
+
+<section class="sec-form">
+  <div class="section-title">
+    <h1>Delete Content</h1>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="sections">
+        <h2>Areas: </h2>
+        {{#if areas}}
+          {{#each areas}}
+          <div class="title">
+            <h3 style="color: red;">{{ id }} |</h3>
+          </div>
+          <div class="title">
+            <h3 style="text-transform: uppercase;">{{ area }}</h3>
+          </div>
+            <a href="/admin/deletetopic/{{id}}"><button type="submit">Excluir</button></a>
+          {{/each}}
+        {{else}}
+          <div class="title">
+            <h3 style="text-transform: uppercase;">Empty areas</h3>
+          </div>
+        {{/if}}
+      </div>
+      <div class="sections">
+        <h2>Subjects: </h2>
+        {{#if areas}}
+          {{#each subjects}}
+          <div class="title">
+            <h3 style="color: red;">{{ id }} |</h3>
+          </div>
+          <div class="title">
+            <h3 style="text-transform: uppercase;">{{ subject }}</h3>
+          </div>
+            <a href="/admin/deletetopic/{{id}}"><button type="submit">Excluir</button></a>
+          {{/each}}
+        {{else}}
+          <div class="title">
+            <h3 style="text-transform: uppercase;">Empty subjects</h3>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,142 @@
+<head>
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/fontawesome.css">
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">
+            <a href="/">Forstudy<span class="logo-dot"></span></a>
+        </div>
+        <div class="user-button">
+            {{#if user}}
+                <div class="user" id="userDropdown">
+                    <span class="user-avatar"></span>
+                    <div class="name">
+                        <h4>{{user.username}}</h4>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="/auth/{{user.id}}/profile">Perfil</a>
+                        <a href="/auth/logout" class="logout-btn">Sair</a>
+                    </div>
+                </div>
+            {{else}}
+                <div class="auth-section">
+                    <a href="/auth/login" class="btn btn-about">Entrar</a>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <main class="main">
+        <section class="intro" id="about">
+            <h2>O que é o Forstudy?</h2>
+            <p>
+                O <strong>Forstudy</strong> é o coração do nosso sistema de conhecimento! Imagine ele como um "cérebro" digital que organiza, armazena e conecta informações de forma inteligente, para que você possa aprender e encontrar respostas de maneira rápida e eficiente.
+            </p>
+            <p>
+                Ele foi criado para ajudar você a explorar e entender diversos assuntos, desde conceitos básicos até temas complexos, de forma organizada e fácil de navegar.
+            </p>
+        </section>
+
+        <section class="how-it-works">
+            <h2>Como o Forstudy funciona?</h2>
+            <p>
+                O Forstudy é dividido em três partes principais, que trabalham juntas para oferecer a melhor experiência de aprendizado:
+            </p>
+            <div class="cards">
+                <div class="card">
+                    <h3>1. Áreas de Conhecimento</h3>
+                    <p>
+                        O Forstudy organiza o conhecimento em <strong>áreas específicas</strong>, como "Religião", "Ciência", "História", entre outras. Cada área é como uma "pasta" que contém tópicos e conteúdos relacionados.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3>2. Tópicos</h3>
+                    <p>
+                        Dentro de cada área, existem <strong>tópicos</strong> que abordam assuntos específicos. Por exemplo, na área de "Religião", você pode encontrar tópicos como "Budismo", "Cristianismo", "Islamismo", etc.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3>3. Seções de Conteúdo</h3>
+                    <p>
+                        Cada tópico é dividido em <strong>seções</strong>, que contêm explicações detalhadas, exemplos e informações úteis. Essas seções são como "pedaços" de conhecimento, organizados para facilitar sua compreensão.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-to-use">
+            <h2>Como você pode usar o Forstudy?</h2>
+            <ol class="steps">
+                <li>
+                    <strong>Busca Rápida</strong>: Digite uma pergunta ou palavra-chave na barra de busca. O Forstudy vai encontrar os conteúdos mais relevantes para você, organizados por área e tópico.
+                </li>
+                <li>
+                    <strong>Navegação por Áreas</strong>: Explore as áreas de conhecimento para encontrar tópicos que interessam a você. Clique em um tópico para ver todas as seções relacionadas.
+                </li>
+                <li>
+                    <strong>Aprendizado Organizado</strong>: As seções de conteúdo são projetadas para serem claras e diretas, ajudando você a aprender de forma eficiente. Você pode seguir uma sequência lógica ou pular para o que mais importa para você.
+                </li>
+                <li>
+                    <strong>Sugestões Inteligentes</strong>: O Forstudy usa tecnologia avançada para sugerir conteúdos relacionados ao que você está estudando. Assim, você sempre encontra informações complementares que enriquecem seu aprendizado.
+                </li>
+            </ol>
+        </section>
+
+        <section class="why-special">
+            <h2>Por que o Forstudy é especial?</h2>
+            <ul class="features">
+                <li><strong>Organização Inteligente</strong>: Tudo é organizado de forma lógica e fácil de entender.</li>
+                <li><strong>Busca Semântica</strong>: O Forstudy entende o que você está procurando, mesmo que você não use as palavras exatas.</li>
+                <li><strong>Conteúdo Confiável</strong>: Todas as informações são cuidadosamente curadas e atualizadas.</li>
+                <li><strong>Aprendizado Personalizado</strong>: O sistema se adapta às suas necessidades, sugerindo conteúdos que fazem sentido para você.</li>
+            </ul>
+        </section>
+
+        <section class="cta">
+            <h2>Pronto para começar?</h2>
+            <p>
+                O Forstudy está aqui para ser seu parceiro de aprendizado. Seja para tirar dúvidas, explorar novos temas ou aprofundar seus conhecimentos, o "cérebro" do sistema está sempre pronto para ajudar.
+            </p>
+            <a href="#areas" class="btn">Comece agora mesmo!</a>
+        </section>
+        <section class="area-section" id="areas">
+            <div class="container">
+                <div class="row">
+                    <div class="text-section">
+                        <p>Áreas disponíveis, escolha uma:</p>
+                    </div>
+                    {{#if areas}}
+                        {{#each areas}}
+                            <div class="areas">
+                                <div class="title">
+                                    <h4>{{area}}</h4>
+                                </div>
+                                <div class="desc">
+                                    <p>Saiba tudo sobre essa area</p>
+                                </div>
+                                {{#if user}}
+                                    <div class="go-to">
+                                        <a href="/search/{{../user.id}}/{{area}}" class="btn btn-about">acessar</a>
+                                    </div>
+                                {{else}}
+                                    <div class="go-to">
+                                        <a href="/auth/login" class="btn btn-about">Entrar</a>
+                                    </div>
+                                {{/if}}
+                            </div>
+                        {{/each}}
+                    {{else}}
+                        <div style="color: #e2a4a4; font-size: 1.4rem; text-transform: capitalize">Sem nenhuma area ainda</div>
+                    {{/if}}
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer" id="footer">
+        <div class="container">
+            <p>&copy; {{currentYear}} Forstudy <span class="logo-dot"></span> Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    <script src="/js/interatividade.js"></script>
+</body>

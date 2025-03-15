@@ -1,0 +1,127 @@
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Usuário</title>
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/output.css">
+</head>
+
+<body>
+    <div class="profile-container">
+        <h1>Perfil do Usuário</h1>
+
+        <div class="user-info">
+            <p><strong>Nome:</strong> {{user.username}}</p>
+            <p><strong>E-mail:</strong> {{user.email}}</p>
+        </div>
+
+        {{!-- Error and success messages --}}
+          <div id="alert-danger" class="alert alert-danger" style="display: none;"></div>
+          <div id="alert-success" class="alert alert-success" style="display: none;"></div>
+
+        <form id="change-password-form">
+            <div class="form-group">
+                <label for="current-password">Senha Atual</label>
+                <input type="password" id="current-password" name="currentPassword" required>
+            </div>
+            <div class="form-group">
+                <label for="new-password">Nova Senha</label>
+                <input type="password" id="new-password" name="newPassword" required>
+            </div>
+            <button type="submit" class="btn">Alterar Senha</button>
+        </form>
+
+        <div class="actions">
+            <button class="btn danger" onclick="deleteHistory()">Eliminar Histórico</button>
+            <button class="btn danger" onclick="deleteAccount()">Eliminar Conta</button>
+        </div>
+    </div>
+    <!-- SweetAlert2 via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        function showMessage(elementId, message) {
+            const alertDiv = document.getElementById(elementId);
+            alertDiv.textContent = message;
+            alertDiv.style.display = 'block';
+
+            // Oculta a mensagem após 5 segundos
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Função para alterar a senha
+        document.getElementById('change-password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('/auth/profile/change-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                showMessage('alert-success', result.message);
+            } else {
+                showMessage('alert-danger', result.message);
+            }
+        });
+
+        // Função para eliminar o histórico
+        async function deleteHistory() {
+            const response = await fetch('/auth/profile/delete-history', {
+                method: 'POST',
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                showMessage('alert-success', result.message)
+            } else {
+                showMessage('alert-danger', result.message)
+            }
+        }
+
+        // Função para eliminar a conta
+        async function deleteAccount() {
+            const result = await Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Esta ação não pode ser desfeita. Você realmente deseja eliminar sua conta?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, eliminar conta!',
+                cancelButtonText: 'Cancelar',
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch('/auth/profile/delete-account', {
+                        method: 'POST',
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        showMessage('alert-success', result.message);
+                        window.location.href = result.redirectTo;
+                    } else {
+                        showMessage('alert-danger', result.message);
+                    }
+                } catch (error) {
+                    showMessage('alert-danger', 'Erro ao processar a requisição.');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

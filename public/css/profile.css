@@ -1,0 +1,132 @@
+/* ----------
+  Fonts
+-----------*/
+@font-face {
+	font-family: "Poppins";
+	src: url("../fonts/Poppins-Regular.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
+	font-family: "Poppins";
+	src: url("../fonts/Poppins-Bold.ttf") format("truetype");
+	font-weight: 700;
+	font-style: normal;
+  }
+  @font-face {
+	font-family: "Roboto";
+	src: url("../fonts/Roboto-Regular.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+  }
+  @font-face {
+	font-family: "Roboto";
+	src: url("../fonts/Roboto-Bold.ttf") format("truetype");
+	font-weight: 700;
+	font-style: normal;
+  }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1f2d6b, #a7a7a7);
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.profile-container {
+    background: #ffffff50;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid #fff;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.user-info {
+    margin-bottom: 20px;
+}
+
+.user-info p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.1212);
+}
+
+.btn {
+    display: inline-block;
+    background: #2575fc;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: #6a11cb;
+}
+
+.danger {
+    background: #ff4d4d;
+}
+
+.danger:hover {
+    background: #cc0000;
+}
+
+.actions {
+    margin-top: 30px;
+}
+
+.actions .btn {
+    margin-right: 10px;
+}
+
+/*- - - - - - - - 
+Responsivity 
+- - - - - - - - - */
+@media (max-width: 600px) {
+    .profile-container {
+        width: 90%;
+        margin: auto;
+    }
+    .actions {
+        text-align: center;
+    }
+    .actions .btn {
+        margin: 10px 0;
+    }
+}

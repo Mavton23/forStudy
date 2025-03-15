@@ -1,0 +1,227 @@
+<!-- Icons -->
+<link rel="stylesheet" href="/css/fontawesome.css">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="/css/searching.css">
+
+<main class="main">
+  <div class="container">
+    <div class="div">
+        <header class="header">
+            <div class="logo">
+                <a href="/">Forstudy</a>
+            </div>
+            <div class="icons">
+                <div class="bg-theme" id="theme-btn">
+                    <div><a><i id="theme-icon" class="fas fa-moon"></i></a></div>
+                </div>
+                <div class="show-history">
+                    <div><a id="history-btn"><i class="fas fa-history"></i></a></div>
+                </div>
+                <div class="signout">
+                    <div><a href="/auth/logout" id="signout-btn"><i class="fas fa-right-to-bracket"></i></a></div>
+                </div>
+            </div>
+        </header>
+        <div class="history" id="history">
+            <div class="container">
+                <div class="row">
+                  <div class="section-title">
+                    <h3>Seu histórico</h3>
+                  </div>
+                  <div class="close">
+                      <i class="fas fa-close"></i>
+                    </div>
+                <section class="search-hist" id="history-container">
+                    <div class="box">
+                        {{#each history}}
+                        <div>
+                            <a class="history-item" data-query="{{this.question}}">
+                                {{ this.question }}
+                            </a>
+                        </div>
+                        {{/each}}
+                    </div>
+                </section>
+                </div>
+            </div>
+        </div>
+        <div class="loader" style="display: none;">
+            <div class="sk-fading-circle">
+                <div class="sk-circle1 sk-circle"></div>
+                <div class="sk-circle2 sk-circle"></div>
+                <div class="sk-circle3 sk-circle"></div>
+                <div class="sk-circle4 sk-circle"></div>
+                <div class="sk-circle5 sk-circle"></div>
+                <div class="sk-circle6 sk-circle"></div>
+                <div class="sk-circle7 sk-circle"></div>
+                <div class="sk-circle8 sk-circle"></div>
+                <div class="sk-circle9 sk-circle"></div>
+                <div class="sk-circle10 sk-circle"></div>
+                <div class="sk-circle11 sk-circle"></div>
+                <div class="sk-circle12 sk-circle"></div>
+            </div>
+        </div>
+        {{!-- Search Results --}}
+        <div class="search-results">
+            <div class="row-content">
+                <div class="result-model" id="results">
+                    <div class="results" id="searchContainer">
+                        <div id="searchError"></div>
+                        <div id="searchSubject"></div>
+                        <div id="searchContent"></div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        {{!-- Form Input --}}
+        <div class="form-container">
+            <div class="search-form">
+                <form id="searchForm">
+                    <div class="input-group">
+                        <input type="text" id="searchInput" name="question" placeholder="Digite sua pergunta..." required>
+                    </div>
+                    <button type="submit" class="send-state"><i class="fas fa-circle-right"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+</main>
+
+<script>
+
+    function showLoader() {
+        document.querySelector('.loader').style.display="flex"
+    }
+    function hideLoader() {
+        document.querySelector('.loader').style.display="none"
+    }
+    // Get search response
+    const searchError = document.querySelector('#searchError');
+    const searchSubject = document.querySelector('#searchSubject');
+    const searchContent = document.querySelector('#searchContent');
+
+    let controller = new AbortController();
+
+    document.querySelector("#searchForm").addEventListener("submit", async function (event) { 
+        event.preventDefault(); 
+
+        const question = document.querySelector("#searchInput").value.trim();
+        if (!question) return;
+
+        fetchCorrespondence(question);
+    });
+
+    async function fetchCorrespondence(question) {
+        // Limpar o input
+        const input = document.querySelector("#searchInput").value = ""
+
+        // Cancela requisição anterior antes de iniciar uma nova
+        if (controller) {
+            controller.abort();
+        }
+
+        // Cria um novo AbortController para a requisição atual
+        controller = new AbortController();
+        const signal = controller.signal;
+
+        showLoader();
+
+        try {
+            const path = window.location.pathname;
+            const parts = path.split('/');
+            const area = parts[parts.length -1];
+
+            const response = await fetch(`/search/getcorrespondence/${area}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ question }),
+                signal,
+            });
+
+            const data = await response.json();
+            hideLoader();
+
+            searchError.innerHTML = '';
+
+            if (data.error) {
+                searchError.innerHTML = `
+                    <p class="result-items" style="color: red;">
+                        ${data.error}    
+                    </p>`;
+
+                searchSubject.innerHTML = '';
+                searchContent.innerHTML = '';
+            } else if (data.answer) {
+                searchSubject.innerHTML = `
+                    <h2 class="result-items">
+                        ${question}
+                    </h2>
+                `;
+                searchContent.innerHTML = `
+                    <p class="result-items">
+                        ${data.answer}
+                    </p>
+                `;
+            } else {
+                searchError.innerHTML = `
+                    <p class="result-items" style="color: red;">
+                        Nenhuma resposta encontrada, tente um jogo de sinônimos.
+                    </p>
+                `;
+            }
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                console.log("Requisição cancelada!");
+            } else {
+                console.error("Erro ao buscar os dados:", error);
+                searchError.innerHTML = `
+                    <p class="result-items" style="color: red;">
+                        Ocorreu um erro ao buscar os dados.
+                    </p>
+                `;
+            }
+            hideLoader();
+        }
+    }
+
+    // Get History
+    document.querySelectorAll('.history-item').forEach(item => {
+        item.addEventListener('click', async (event) => {
+            event.preventDefault()
+            showLoader()
+
+            const pickHistory = event.currentTarget.getAttribute('data-query')
+
+            try {
+                const response = await fetch(`/search/history?query=${pickHistory}`);
+                const results = await response.json();
+
+                const historyContainer = document.getElementById('history-container');
+                historyContainer.innerHTML = '';
+
+                hideLoader();
+                if (results && results.results) {
+                    // Caso a resposta seja um objeto com "result"
+                    const resultHTML = `
+                        <pre class="result-items">${results.results}</pre>
+                    `;
+                    historyContainer.innerHTML += resultHTML;
+                } else {
+                    // Caso nenhum formato esperado seja encontrado
+                    historyContainer.innerHTML = `<p style=color: red;>Nenhum resultado encontrado.</p>`;
+                }
+            } catch (error) {
+                console.error('Erro ao buscar resultados:', error);
+                historyContainer.innerHTML = '<p style="color: red;">Erro ao buscar os resultados.</p>';
+            } finally {
+                hideLoader();
+            }
+        })
+    })
+</script>
+
+<script src="/js/search.js"></script>

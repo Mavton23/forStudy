@@ -1,0 +1,155 @@
+<link rel="stylesheet" href="/css/form.css">
+
+<section class="sec-form">
+    <div class="section-title">
+        <h1>Criar uma matéria</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <form action="/admin/newtopic" method="post" enctype="multipart/form-data">
+                <div>
+                    <h3>Escolha uma das opções:</h3>
+                    <label for="manual" class="mode-label">
+                        <input type="radio" id="manual" name="inputMode" value="manual" checked> Adicionar Manualmente
+                    </label>
+                    <label for="upload" class="mode-label">
+                        <input type="radio" id="upload" name="inputMode" value="upload"> Fazer Upload de Arquivo Markdown
+                    </label>
+                </div>
+                
+                {{#if success}}
+                    <div class="alert alert-success">
+                        <p>{{success}}</p>
+                    </div>
+                {{/if}}
+                {{#if error}}
+                    <div class="alert alert-danger">
+                        <p>{{error}}</p>
+                    </div>
+                {{/if}}
+
+                <!-- Seção para entrada manual -->
+                <div id="manual-input">
+                    <div class="input-group">
+                        <select name="area" id="areas-de-estudo">
+                            <option value="fisica">Física</option>
+                            <option value="quimica">Química</option>
+                            <option value="biologia">Biologia</option>
+                            <option value="matematica">Matemática</option>
+                            <option value="ciencias-da-terra">Ciências da Terra</option>
+                            <option value="ciencias-ambientais">Ciências Ambientais</option>
+                            <option value="medicina">Medicina</option>
+                            <option value="farmacia">Farmácia</option>
+                            <option value="enfermagem">Enfermagem</option>
+                            <option value="nutricao">Nutrição</option>
+                            <option value="saude-publica">Saúde Pública</option>
+                            <option value="ciencia-da-computacao">Ciência da Computação</option>
+                            <option value="engenharia">Engenharia</option>
+                            <option value="tecnologia-da-informacao">Tecnologia da Informação</option>
+                            <option value="robotica">Robótica</option>
+                            <option value="psicologia">Psicologia</option>
+                            <option value="sociologia">Sociologia</option>
+                            <option value="antropologia">Antropologia</option>
+                            <option value="historia">História</option>
+                            <option value="religiao">Religião</option>
+                            <option value="filosofia">Filosofia</option>
+                            <option value="linguistica">Linguística</option>
+                            <option value="artes-visuais">Artes Visuais</option>
+                            <option value="musica">Música</option>
+                            <option value="design">Design</option>
+                            <option value="cinema">Cinema</option>
+                            <option value="teatro">Teatro</option>
+                            <option value="administracao">Administração</option>
+                            <option value="economia">Economia</option>
+                            <option value="financas">Finanças</option>
+                            <option value="recursos-humanos">Recursos Humanos</option>
+                            <option value="direito">Direito</option>
+                            <option value="ciencia-politica">Ciência Política</option>
+                            <option value="educacao">Educação</option>
+                            <option value="jornalismo">Jornalismo</option>
+                            <option value="publicidade">Publicidade</option>
+                            <option value="relacoes-publicas">Relações Públicas</option>
+                            <option value="energias-renovaveis">Energias Renováveis</option>
+                            <option value="gestao-ambiental">Gestão Ambiental</option>
+                            <option value="agricultura-sustentavel">Agricultura Sustentável</option>
+                            <option value="nanotecnologia">Nanotecnologia</option>
+                            <option value="neurociencia">Neurociência</option>
+                            <option value="exploracao-espacial">Exploração Espacial</option>
+                            <option value="etica-tecnologia">Ética e Tecnologia</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="title" name="subject" required placeholder="Título do conteudo">
+                    </div>
+
+                    <div id="sections">
+                        <div class="section">
+                            <div class="input-group">
+                                <input type="text" name="subtitles[]" required placeholder="Subtítulo">
+                            </div>
+                            <div class="input-group">
+                                <textarea name="contents[]" id="topic-text" rows="4" required placeholder="Conteúdo:"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="add-section">Add section</button>
+                </div>
+
+                <!-- Seção para upload -->
+                <div id="upload-input" style="display: none;">
+                    <div class="input-group">
+                        <input type="file" name="file" id="file" accept=".md">
+                    </div>
+                </div>
+
+                <button type="submit">Save content</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    const manualInputDiv = document.getElementById('manual-input');
+    const uploadInputDiv = document.getElementById('upload-input');
+    const inputModeRadios = document.querySelectorAll('input[name="inputMode"]');
+    const addSectionButton = document.getElementById('add-section');
+    const sectionsDiv = document.getElementById('sections');
+
+    // Campos do formulário
+    const manualFields = document.querySelectorAll('#manual-input input, #manual-input textarea');
+    const uploadField = document.querySelector('#upload-input input[name="file"]');
+
+    // Alterna entre as opções de entrada
+    inputModeRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (radio.value === 'manual') {
+                manualInputDiv.style.display = 'block';
+                uploadInputDiv.style.display = 'none';
+                manualFields.forEach(field => field.setAttribute('required', ''));
+                uploadField.removeAttribute('required');
+            
+            } else if (radio.value === 'upload') {
+                manualInputDiv.style.display = 'none';
+                uploadInputDiv.style.display = 'block';
+                manualFields.forEach(field => field.removeAttribute('required'));
+                uploadField.setAttribute('required', '');
+            }
+        });
+    });
+
+    // Adicionar mais seções manualmente
+    addSectionButton.addEventListener('click', () => {
+        const sectionHTML = `
+            <div class="section">
+                <div class="input-group">
+                    <input type="text" name="subtitles[]" required placeholder="Subtítulo:">
+                </div>
+                <div class="input-group">
+                    <textarea name="contents[]" id="topic-text" rows="4" required placeholder="Conteúdo:"></textarea>
+                </div>
+            </div>
+        `;
+        sectionsDiv.insertAdjacentHTML('beforeend', sectionHTML);
+    });
+</script>
