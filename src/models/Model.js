@@ -127,7 +127,7 @@ BrainSection.belongsTo(Brain, { foreignKey: 'brainId' })
 UserHistory.belongsTo(User, { foreignKey: 'userId', onDelete: 'CASCADE' })
 User.hasMany(UserHistory, { foreignKey: 'userId', onDelete: 'CASCADE' })
 
-
+db.sequelize.sync({ alter: true }).then(() => console.log("Banco de dados modificado com sucesso!")).catch((err) => console.log("Ocorreu um erro ao modificar a tabela: " + err))
 
 module.exports = {
     User,
